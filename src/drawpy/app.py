@@ -7,10 +7,9 @@ from typing import Iterable
 from .traces import Stroke, StrokeManager
 
 
-def run(strokes: Iterable[Stroke]) -> None:
+def run(strokes: Iterable[Stroke], countdown: float = 3.0) -> None:
     """Ejecuta los trazos en orden."""
 
-    manager = StrokeManager()
-    for stroke in strokes:
-        manager.add(stroke)
+    manager = StrokeManager(countdown=countdown)
+    manager.extend(strokes)
     manager.run()

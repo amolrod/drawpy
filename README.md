@@ -23,6 +23,10 @@ pip install -r requirements.txt
    python main.py --demo line       # Línea horizontal básica
    python main.py --demo rectangle  # Rectángulo
    python main.py --demo square     # Cuadrado
+   python main.py --demo zigzag     # Zigzag continuo
+   python main.py --demo wave       # Curva sinusoidal
+   python main.py --demo star       # Estrella de 5 puntas
+   python main.py --demo spiral     # Espiral abierta
    python main.py --demo line --countdown 5  # Añade margen antes de iniciar
    ```
 5. Una vez que aparezca el mensaje "Comenzando en ...", sitúa el cursor sobre el lienzo. El programa tomará control tras finalizar la cuenta regresiva.
@@ -37,23 +41,34 @@ src/drawpy/
 ├── traces.py          # Modelo Stroke y administrador de secuencias
 └── drawings/
     ├── lines.py       # Generadores de líneas
-    └── shapes.py      # Figuras basadas en líneas
+    ├── shapes.py      # Figuras basadas en líneas
+    └── patterns.py    # Zigzag, ondas, estrellas y espirales
 ```
 
 ## Ejemplo de código
 ```python
 from src.drawpy import app
-from src.drawpy.drawings import lines, shapes
+from src.drawpy.drawings import lines, patterns, shapes
 
 # Línea en diagonal
 line = lines.line((350, 400), (600, 200))
 
-# Rectángulo que regresa al punto de origen
-rect = shapes.rectangle((300, 250), width=200, height=120)
+# Estrella en el centro del lienzo
+star = patterns.star((500, 400), radius=140, tips=6)
 
-app.run([line, rect], countdown=4)
+# Espiral para rematar el dibujo
+spiral = patterns.spiral((600, 450), turns=4, step=14)
+
+app.run([line, star, spiral], countdown=4)
 ```
 Los generadores devuelven instancias de `Stroke`, lo que permite componer listas con diferentes tipos de trazos.
+
+### Parámetros útiles desde la CLI
+- `--origin-x / --origin-y`: Coloca el origen del dibujo.
+- `--width` / `--height`: Ajustan el tamaño de rectángulos, ondas y líneas horizontales.
+- `--size`: Se usa como base para cuadrados y estrellas.
+- `--segments`, `--amplitude`, `--cycles`: Controlan la forma de zigzags y ondas.
+- `--turns`, `--step`: Definen la apertura de la espiral.
 
 ## FAQ
 **¿Qué pasa si mis coordenadas no coinciden con el lienzo?**
@@ -67,6 +82,9 @@ Sí. El script solo mueve el ratón, así que puedes dibujar en cualquier lienzo
 
 **¿Es seguro ejecutar el script?**
 PyAutoGUI usa `FAILSAFE=True` por defecto. Adicionalmente, se añade un conteo regresivo configurable antes de iniciar.
+
+**¿Cómo consigo figuras más complejas?**
+Usa el parámetro `--demo` con valores como `zigzag`, `wave`, `star` o `spiral` y ajusta los argumentos opcionales (`--segments`, `--amplitude`, `--tips`, `--turns`, etc.) para experimentar con diferentes estilos.
 
 ## Ideas futuras
 - Lectura de trayectorias desde archivos SVG simples.
