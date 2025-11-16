@@ -2,8 +2,6 @@ from __future__ import annotations
 
 """CLI principal para ejecutar ejemplos de drawpy."""
 
-from __future__ import annotations
-
 import argparse
 from typing import List
 
